@@ -77,3 +77,33 @@ function alternarStatus(id) {
 function excluirItem(id) {
   setItens((itensAtuais) => itensAtuais.filter((item) => item.id !== id));
 }
+
+ // INÍCIO DA EDIÇÃO
+  function iniciarEdicao(item) {
+    setEditandoId(item.id);
+    setTextoInput(item.titulo);
+    setTipoSelecionado(item.tipo);
+  }
+
+  // SALVAR EDIÇÃO
+  function salvarEdicao() {
+    const titulo = textoInput.trim();
+
+    if (titulo === "" || editandoId === null) return;
+
+    setItens((itensAtuais) =>
+      itensAtuais.map((item) =>
+        item.id === editandoId
+          ? { ...item, titulo, tipo: tipoSelecionado }
+          : item,
+      ),
+    );
+
+    setTextoInput("");
+    setEditandoId(null);
+  }
+
+  // LIMPAR TODA A COLEÇÃO
+  function limparItens() {
+    setItens([]);
+  }
