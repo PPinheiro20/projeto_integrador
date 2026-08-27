@@ -64,7 +64,7 @@ function adicionarItem() {
 function alternarStatus(id) {
   setItens((itensAtuais) =>
     itensAtuais.map((item) => {
-      if (item.id != id) return item;
+      if (item.id !== id) return item;
 
       const indiceAtual = ORDEM_STATUS.indexOf(item.status);
       const proximoIndice = (indiceAtual + 1) % ORDEM_STATUS.length;
