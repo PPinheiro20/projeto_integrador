@@ -73,3 +73,7 @@ function alternarStatus(id) {
     }),
   );
 }
+
+function excluirItem(id) {
+  setItens((itensAtuais) => itensAtuais.filter((item) => item.id !== id));
+}
