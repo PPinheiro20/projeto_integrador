@@ -136,5 +136,18 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 12,
-  }
-})
+  },
+
+  botaoExcluir: {
+    backgroundColor: "#e74c3c",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+  },
+
+  textoBotaoExcluir: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+});
