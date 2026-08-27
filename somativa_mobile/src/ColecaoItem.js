@@ -1,24 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// Componente responsável por renderizar UM item da coleção.
-// Recebe o item e funções (callbacks) vindas do componente pai (ColecaoScreen).
-
-const LABELS_TIPO = {
-  jogo: "🎮 Jogo",
-  livro: "📖 Livro",
-  filme: "🎬 Filme",
-};
-
 const LABELS_STATUS = {
-  quero_comecar: "Quero começar",
-  em_andamento: "Em andamento",
+  quero_jogar: "Quero jogar",
+  jogando: "Jogando",
   concluido: "Concluído",
 };
 
 const CORES_STATUS = {
-  quero_comecar: "#f39c12",
-  em_andamento: "#2e86de",
-  concluido: "#27ae60",
+  quero_jogar: "#F2A900",
+  jogando: "#2684FF",
+  concluido: "#35C759",
 };
 
 export default function ColecaoItem({
@@ -29,22 +20,28 @@ export default function ColecaoItem({
 }) {
   return (
     <View style={styles.item}>
-      <View style={styles.linhaTopo}>
-        <Text style={styles.tipo}>{LABELS_TIPO[item.tipo]}</Text>
-        <Text style={styles.titulo}>{item.titulo}</Text>
-      </View>
+      <Text style={styles.titulo}>{item.titulo}</Text>
 
       <View style={styles.linhaAcoes}>
-        {/* Ao tocar no status, avança para o próximo da sequência:
-            quero começar -> em andamento -> concluído -> quero começar */}
         <TouchableOpacity
           style={[
             styles.badgeStatus,
-            { backgroundColor: CORES_STATUS[item.status] },
+            {
+              borderColor: CORES_STATUS[item.status],
+            },
           ]}
           onPress={() => aoAlternarStatus(item.id)}
         >
-          <Text style={styles.textoBadge}>{LABELS_STATUS[item.status]}</Text>
+          <Text
+            style={[
+              styles.textoBadge,
+              {
+                color: CORES_STATUS[item.status],
+              },
+            ]}
+          >
+            {LABELS_STATUS[item.status]}
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.botoes}>
@@ -52,7 +49,7 @@ export default function ColecaoItem({
             style={styles.botaoEditar}
             onPress={() => aoEditar(item)}
           >
-            <Text style={styles.textoBotaoEditar}>Editar</Text>
+            <Text style={styles.textoBotao}>Editar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -69,37 +66,29 @@ export default function ColecaoItem({
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    marginBottom: 10,
+    backgroundColor: "#0E0B15",
+    borderWidth: 1,
+    borderColor: "#281A3D",
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
 
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
 
-    elevation: 2,
-  },
-
-  linhaTopo: {
-    marginBottom: 8,
-  },
-
-  tipo: {
-    fontSize: 12,
-    color: "#888",
-    marginBottom: 2,
+    elevation: 3,
   },
 
   titulo: {
-    fontSize: 16,
-    color: "#222",
-    fontWeight: "600",
+    fontSize: 18,
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    marginBottom: 14,
   },
 
   linhaAcoes: {
@@ -109,13 +98,14 @@ const styles = StyleSheet.create({
   },
 
   badgeStatus: {
-    borderRadius: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    backgroundColor: "#0B0910",
+    borderRadius: 20,
+    paddingVertical: 7,
+    paddingHorizontal: 13,
+    borderWidth: 1,
   },
 
   textoBadge: {
-    color: "#fff",
     fontWeight: "bold",
     fontSize: 11,
   },
@@ -125,28 +115,32 @@ const styles = StyleSheet.create({
   },
 
   botaoEditar: {
-    backgroundColor: "#2e86de",
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    marginRight: 6,
+    backgroundColor: "#0B0910",
+    borderWidth: 1,
+    borderColor: "#A855F7",
+    paddingVertical: 7,
+    paddingHorizontal: 11,
+    borderRadius: 8,
+    marginRight: 7,
   },
 
-  textoBotaoEditar: {
-    color: "#fff",
+  textoBotao: {
+    color: "#A855F7",
     fontWeight: "bold",
     fontSize: 12,
   },
 
   botaoExcluir: {
-    backgroundColor: "#e74c3c",
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 6,
+    backgroundColor: "#0B0910",
+    borderWidth: 1,
+    borderColor: "#E74C3C",
+    paddingVertical: 7,
+    paddingHorizontal: 11,
+    borderRadius: 8,
   },
 
   textoBotaoExcluir: {
-    color: "#fff",
+    color: "#E74C3C",
     fontWeight: "bold",
     fontSize: 12,
   },
