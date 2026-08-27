@@ -11,7 +11,6 @@ const LABELS_TIPO = { jogo: "Jogo", livro: "Livro", filme: "Filme" };
 // Ordem de avanço do status ao tocar no badge do item
 const ORDEM_STATUS = ["quero_comecar", "em_andamento", "concluido"];
 
-
 export default function ColecaoScreen() {
   const [itens, setItens] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -39,10 +38,38 @@ export default function ColecaoScreen() {
   useEffect(() => {
     if (carregando) return;
 
-    AsyncStorage.setItem(CHAVE_STORAGE, JSON.stringify(itens)).catch(
-      (erro) => {
-        console.error("Erro ao salvar itens no storage", erro);
-      },
-    );
+    AsyncStorage.setItem(CHAVE_STORAGE, JSON.stringify(itens)).catch((erro) => {
+      console.error("Erro ao salvar itens no storage", erro);
+    });
   }, [itens, carregando]);
+}
+
+function adicionarItem() {
+  const titulo = textoInput.trim();
+
+  if (titulo === "") return;
+
+  const novoItem = {
+    id: Date.now().toString(),
+    titulo,
+    tipo: tipoSelecionado,
+    status: "quero_comecar",
+  };
+
+  setItens((itensAtuais) => [...itensAtuais, novoItem]);
+
+  setTextoInput("");
+}
+
+function alternarStatus(id) {
+  setItens((itensAtuais) =>
+    itensAtuais.map((item) => {
+      if (item.id != id) return item;
+
+      const indiceAtual = ORDEM_STATUS.indexOf(item.status);
+      const proximoIndice = (indiceAtual + 1) % ORDEM_STATUS.length;
+
+      return { ...item, status: ORDEM_STATUS[proximoIndice] };
+    }),
+  );
 }
