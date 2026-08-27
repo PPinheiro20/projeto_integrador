@@ -66,3 +66,75 @@ export default function ColecaoItem({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 10,
+
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+
+    elevation: 2,
+  },
+
+  linhaTopo: {
+    marginBottom: 8,
+  },
+
+  tipo: {
+    fontSize: 12,
+    color: "#888",
+    marginBottom: 2,
+  },
+
+  titulo: {
+    fontSize: 16,
+    color: "#222",
+    fontWeight: "600",
+  },
+
+  linhaAcoes: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  badgeStatus: {
+    borderRadius: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+  },
+
+  textoBadge: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 11,
+  },
+
+  botoes: {
+    flexDirection: "row",
+  },
+
+  botaoEditar: {
+    backgroundColor: "#2e86de",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    marginRight: 6,
+  },
+
+  textoBotaoEditar: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 12,
+  }
+})
