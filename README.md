@@ -216,7 +216,6 @@ Para armazenar os dados da coleção de jogos, foi escolhido o **AsyncStorage**.
 A escolha foi feita levando em consideração o volume e a complexidade dos dados
 utilizados no projeto. Cada jogo possui informações simples, como:
 
-- ID;
 - Título;
 - Status;
 - Horas jogadas;
