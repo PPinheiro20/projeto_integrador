@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
 
 const LABELS_STATUS = {
   quero_jogar: "Quero jogar",
@@ -17,10 +17,31 @@ export default function ColecaoItem({
   aoAlternarStatus,
   aoExcluir,
   aoEditar,
+  aoAlterarHoras, // Corrigido a digitação da prop
 }) {
+  // Regra: só mostra as horas se não for "quero_jogar"
+  const mostrarHoras = item.status === "jogando" || item.status === "concluido";
+
   return (
     <View style={styles.item}>
       <Text style={styles.titulo}>{item.titulo}</Text>
+
+      {/* Renderização condicional do campo de horas */}
+      {mostrarHoras && (
+        <View style={styles.linhaHoras}>
+          
+          <TextInput
+            style={styles.inputHoras}
+            keyboardType="numeric"
+            value={item.horas ? String(item.horas) : ""}
+            onChangeText={(texto) => aoAlterarHoras(item.id, texto)}
+            placeholder="0"
+            placeholderTextColor="#555"
+          />
+
+          <Text style={styles.textoHoras}>   Horas Jogadas  </Text>
+        </View>
+      )}
 
       <View style={styles.linhaAcoes}>
         <TouchableOpacity
@@ -89,6 +110,31 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     marginBottom: 14,
+  },
+
+  linhaHoras: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+
+  textoHoras: {
+    color: "#A78BFA",
+    fontSize: 14,
+    marginRight: 8,
+    fontWeight: "bold",
+  },
+
+  inputHoras: {
+    backgroundColor: "#100D18",
+    borderWidth: 1,
+    borderColor: "#7028C9",
+    borderRadius: 6,
+    color: "#FFF",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    width: 60,
+    textAlign: "center",
   },
 
   linhaAcoes: {

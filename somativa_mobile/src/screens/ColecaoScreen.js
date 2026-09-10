@@ -66,6 +66,7 @@ export default function ColecaoScreen() {
             id: Date.now().toString(),
             titulo: titulo,
             status: "quero_jogar",
+            horas: "0",
         };
 
         setItens((itensAtuais) => [
@@ -95,6 +96,14 @@ export default function ColecaoScreen() {
         );
     }
 
+    // Atualiza o tempo de jogo na lista
+    function alterarHoras(id, horas) {
+        setItens((itensAtuais) =>
+            itensAtuais.map((item) =>
+                item.id === id ? { ...item, horas: horas } : item
+            )
+        );
+    }
     // Exclui um jogo
     function excluirItem(id) {
         setItens((itensAtuais) =>
@@ -184,6 +193,7 @@ export default function ColecaoScreen() {
                         aoAlternarStatus={alternarStatus}
                         aoExcluir={excluirItem}
                         aoEditar={iniciarEdicao}
+                        aoAlterarHoras={alterarHoras}
                     />
                 )}
                 ListEmptyComponent={
