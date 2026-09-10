@@ -17,19 +17,19 @@ export default function ColecaoItem({
   aoAlternarStatus,
   aoExcluir,
   aoEditar,
-  aoAlterarHoras, // Corrigido a digitação da prop
+  aoAlterarHoras,
+  aoAlterarComentario,
 }) {
-  // Regra: só mostra as horas se não for "quero_jogar"
-  const mostrarHoras = item.status === "jogando" || item.status === "concluido";
+  // Regra: só exibe horas e comentários se o status for "jogando" ou "concluido"
+  const permitirDetalhes = item.status === "jogando" || item.status === "concluido";
 
   return (
     <View style={styles.item}>
       <Text style={styles.titulo}>{item.titulo}</Text>
 
       {/* Renderização condicional do campo de horas */}
-      {mostrarHoras && (
+      {permitirDetalhes && (
         <View style={styles.linhaHoras}>
-          
           <TextInput
             style={styles.inputHoras}
             keyboardType="numeric"
@@ -39,7 +39,22 @@ export default function ColecaoItem({
             placeholderTextColor="#555"
           />
 
-          <Text style={styles.textoHoras}>   Horas Jogadas  </Text>
+          <Text style={styles.textoHoras}>   Horas Jogadas</Text>
+        </View>
+      )}
+
+      {/* Renderização condicional do campo de comentário */}
+      {permitirDetalhes && (
+        <View style={styles.secaoComentario}>
+          <Text style={styles.labelComentario}>Comentário / Anotações</Text>
+          <TextInput
+            style={styles.inputComentario}
+            multiline
+            placeholder="Escreva uma anotação sobre o jogo..."
+            placeholderTextColor="#555"
+            value={item.comentario || ""}
+            onChangeText={(texto) => aoAlterarComentario(item.id, texto)}
+          />
         </View>
       )}
 
@@ -135,6 +150,30 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     width: 60,
     textAlign: "center",
+  },
+
+  secaoComentario: {
+    marginBottom: 14,
+  },
+
+  labelComentario: {
+    color: "#A78BFA",
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 6,
+  },
+
+  inputComentario: {
+    backgroundColor: "#100D18",
+    borderWidth: 1,
+    borderColor: "#281A3D",
+    borderRadius: 8,
+    color: "#FFFFFF",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 13,
+    minHeight: 50,
+    textAlignVertical: "top",
   },
 
   linhaAcoes: {

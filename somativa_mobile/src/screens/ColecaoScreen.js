@@ -67,6 +67,7 @@ export default function ColecaoScreen() {
             titulo: titulo,
             status: "quero_jogar",
             horas: "0",
+            comentario: "",
         };
 
         setItens((itensAtuais) => [
@@ -104,6 +105,16 @@ export default function ColecaoScreen() {
             )
         );
     }
+
+    // Atualiza o comentário na lista
+    function alterarComentario(id, comentario) {
+        setItens((itensAtuais) =>
+            itensAtuais.map((item) =>
+                item.id === id ? { ...item, comentario: comentario } : item
+            )
+        );
+    }
+
     // Exclui um jogo
     function excluirItem(id) {
         setItens((itensAtuais) =>
@@ -194,6 +205,7 @@ export default function ColecaoScreen() {
                         aoExcluir={excluirItem}
                         aoEditar={iniciarEdicao}
                         aoAlterarHoras={alterarHoras}
+                        aoAlterarComentario={alterarComentario}
                     />
                 )}
                 ListEmptyComponent={
