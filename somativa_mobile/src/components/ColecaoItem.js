@@ -1,17 +1,62 @@
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
+// Importa componentes do React Native
+import {
+  StyleSheet,          // Criação dos estilos
+  Text,                // Exibição de textos
+  TouchableOpacity,    // Botões clicáveis
+  View,                // Organização dos elementos
+  TextInput,           // Campos para digitação
+} from "react-native";
 
+
+// =============================================================
+// NOMES DOS STATUS
+// =============================================================
+
+// O aplicativo guarda os status como códigos,
+// mas mostra textos mais amigáveis para o usuário.
 const LABELS_STATUS = {
+
+  // Código "quero_jogar" aparece como "Quero jogar"
   quero_jogar: "Quero jogar",
+
+  // Código "jogando" aparece como "Jogando"
   jogando: "Jogando",
+
+  // Código "concluido" aparece como "Concluído"
   concluido: "Concluído",
 };
 
+
+// =============================================================
+// CORES DOS STATUS
+// =============================================================
+
+// Cada status possui uma cor diferente.
 const CORES_STATUS = {
+
+  // Amarelo para "Quero jogar"
   quero_jogar: "#F2A900",
+
+  // Azul para "Jogando"
   jogando: "#2684FF",
+
+  // Verde para "Concluído"
   concluido: "#35C759",
 };
 
+
+// =============================================================
+// COMPONENTE COLECAOITEM
+// =============================================================
+
+// Recebe informações e funções do ColecaoScreen.
+//
+// item -> jogo que será exibido
+// aoAlternarStatus -> muda o status do jogo
+// aoExcluir -> exclui o jogo
+// aoEditar -> inicia a edição
+// aoAlterarHoras -> altera horas jogadas
+// aoAlterarComentario -> altera comentário
 export default function ColecaoItem({
   item,
   aoAlternarStatus,
@@ -20,55 +65,163 @@ export default function ColecaoItem({
   aoAlterarHoras,
   aoAlterarComentario,
 }) {
-  // Regra: só exibe horas e comentários se o status for "jogando" ou "concluido"
-  const permitirDetalhes = item.status === "jogando" || item.status === "concluido";
+
+
+  // ===========================================================
+  // VERIFICAÇÃO DOS DETALHES
+  // ===========================================================
+
+  // Horas e comentários só aparecem quando o jogo está:
+  //
+  // "jogando" OU "concluido"
+  //
+  // Se estiver "quero_jogar", esses campos ficam escondidos.
+  const permitirDetalhes =
+    item.status === "jogando" ||
+    item.status === "concluido";
+
+
+  // ===========================================================
+  // PARTE VISUAL DO ITEM
+  // ===========================================================
 
   return (
-    <View style={styles.item}>
-      <Text style={styles.titulo}>{item.titulo}</Text>
 
-      {/* Renderização condicional do campo de horas */}
+    // Container que representa o card do jogo
+    <View style={styles.item}>
+
+
+      {/* Mostra o nome do jogo */}
+      <Text style={styles.titulo}>
+        {item.titulo}
+      </Text>
+
+
+      {/* =====================================================
+          CAMPO DE HORAS
+          ===================================================== */}
+
+      {/*
+
+        "&&" significa:
+
+        Se permitirDetalhes for true,
+        mostra o conteúdo que está depois do &&.
+
+        Se for false, não mostra nada.
+
+      */}
+
       {permitirDetalhes && (
+
         <View style={styles.linhaHoras}>
+
+          {/* Campo para informar horas jogadas */}
           <TextInput
             style={styles.inputHoras}
+
+            // Abre teclado numérico
             keyboardType="numeric"
+
+            // Mostra o valor atual das horas
+            //
+            // String() garante que o valor seja tratado
+            // como texto pelo TextInput
             value={item.horas ? String(item.horas) : ""}
-            onChangeText={(texto) => aoAlterarHoras(item.id, texto)}
+
+            // Quando o usuário digita,
+            // chama a função do ColecaoScreen
+            onChangeText={(texto) =>
+              aoAlterarHoras(item.id, texto)
+            }
+
             placeholder="0"
             placeholderTextColor="#555"
           />
 
-          <Text style={styles.textoHoras}>   Horas Jogadas</Text>
+
+          {/* Texto ao lado do campo */}
+          <Text style={styles.textoHoras}>
+              Horas Jogadas
+          </Text>
+
         </View>
       )}
 
-      {/* Renderização condicional do campo de comentário */}
+
+      {/* =====================================================
+          CAMPO DE COMENTÁRIO
+          ===================================================== */}
+
+      {/* Só aparece quando o status permite detalhes */}
       {permitirDetalhes && (
+
         <View style={styles.secaoComentario}>
-          <Text style={styles.labelComentario}>Comentário / Anotações</Text>
+
+          {/* Nome do campo */}
+          <Text style={styles.labelComentario}>
+            Comentário / Anotações
+          </Text>
+
+
+          {/* Campo para escrever o comentário */}
           <TextInput
             style={styles.inputComentario}
+
+            // Permite escrever várias linhas
             multiline
+
             placeholder="Escreva uma anotação sobre o jogo..."
             placeholderTextColor="#555"
+
+            // Mostra o comentário atual
+            //
+            // || "" evita problemas caso comentario
+            // seja null ou undefined
             value={item.comentario || ""}
-            onChangeText={(texto) => aoAlterarComentario(item.id, texto)}
+
+            // Atualiza o comentário
+            onChangeText={(texto) =>
+              aoAlterarComentario(item.id, texto)
+            }
           />
+
         </View>
       )}
 
+
+      {/* =====================================================
+          LINHA DE AÇÕES
+          ===================================================== */}
+
       <View style={styles.linhaAcoes}>
+
+
+        {/* ===================================================
+            BOTÃO DE STATUS
+            =================================================== */}
+
         <TouchableOpacity
+
+          // Usa o estilo padrão e adiciona
+          // uma cor de borda de acordo com o status
           style={[
             styles.badgeStatus,
             {
               borderColor: CORES_STATUS[item.status],
             },
           ]}
-          onPress={() => aoAlternarStatus(item.id)}
+
+          // Quando clicar, muda o status
+          onPress={() =>
+            aoAlternarStatus(item.id)
+          }
         >
+
           <Text
+
+            // Usa o estilo padrão e muda a cor
+            // de acordo com o status
             style={[
               styles.textoBadge,
               {
@@ -76,31 +229,79 @@ export default function ColecaoItem({
               },
             ]}
           >
+
+            {/*
+
+              Procura o texto correspondente ao status.
+
+              Exemplo:
+
+              item.status = "jogando"
+
+              LABELS_STATUS["jogando"]
+
+              resultado = "Jogando"
+
+            */}
             {LABELS_STATUS[item.status]}
+
           </Text>
+
         </TouchableOpacity>
 
+
+        {/* ===================================================
+            BOTÕES EDITAR E EXCLUIR
+            =================================================== */}
+
         <View style={styles.botoes}>
+
+
+          {/* Botão Editar */}
           <TouchableOpacity
             style={styles.botaoEditar}
+
+            // Envia o jogo inteiro para a função de edição
             onPress={() => aoEditar(item)}
           >
-            <Text style={styles.textoBotao}>Editar</Text>
+
+            <Text style={styles.textoBotao}>
+              Editar
+            </Text>
+
           </TouchableOpacity>
 
+
+          {/* Botão Excluir */}
           <TouchableOpacity
             style={styles.botaoExcluir}
+
+            // Envia apenas o ID do jogo
+            // para a função de exclusão
             onPress={() => aoExcluir(item.id)}
           >
-            <Text style={styles.textoBotaoExcluir}>Excluir</Text>
+
+            <Text style={styles.textoBotaoExcluir}>
+              Excluir
+            </Text>
+
           </TouchableOpacity>
+
         </View>
+
       </View>
+
     </View>
   );
 }
 
+
+// =============================================================
+// ESTILOS DO ITEM
+// =============================================================
+
 const styles = StyleSheet.create({
+
   item: {
     backgroundColor: "#0E0B15",
     borderWidth: 1,
@@ -112,6 +313,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.3,
     shadowRadius: 5,
+
     shadowOffset: {
       width: 0,
       height: 2,
@@ -229,4 +431,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
   },
+
 });
